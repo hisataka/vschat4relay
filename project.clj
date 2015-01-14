@@ -4,7 +4,10 @@
   :min-lein-version "2.0.0"
   :dependencies [[org.clojure/clojure "1.6.0"]
                  [compojure "1.3.1"]
-                 [ring/ring-defaults "0.1.2"]]
+                 [ring/ring-defaults "0.1.2"]
+                 [http-kit "2.1.16"]
+                 [org.clojure/java.jdbc "0.3.6"]
+                 [postgresql/postgresql "9.3-1102.jdbc4"]]
   :plugins [[lein-ring "0.8.13"]]
   :ring {:handler vschat4relay.core.handler/app}
   :profiles
