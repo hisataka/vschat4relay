@@ -37,12 +37,23 @@
 
 ;;;;;;;;;; ゲーム実行
 ; 会話ログをDBへ挿入
-(defn regist-chat []
+(defn regist-chat [val]
   (j/insert!
     postgresql-db
     :hoge
-    {:col1 @counter}))
-
+    {:col1 val}))
+(defn start[]
+  (if (true? @is-started) "game is started !!"
+    (do
+      (reset! is-started true)
+      (while @is-started
+        (do
+          (swap! counter inc)
+          (regist-chat (str "game running :" @counter))
+          (Thread/sleep 10000)))
+      (regist-chat "game is end")
+      (reset! counter 0)
+      "game is end")))
 
 ;;;;;;;;;; ルーティング設定
 (defroutes app-routes
@@ -59,10 +70,7 @@
          (res-http
           (if (true? @is-started) "true" "false"))))
   (GET "/start" []
-       (do
-         (reset! is-started true)
-         (res-http
-          (if (true? @is-started) "true" "false"))))
+       (res-http (start)))
   (GET "/counter" []
        (res-http (str @counter)))
   (GET "/inc-counter" []
