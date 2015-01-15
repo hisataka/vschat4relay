@@ -5,78 +5,34 @@
   (:require [org.httpkit.client :as http])
   (:require [clojure.java.jdbc :as j]))
 
-;;;;;;;;;; postgresql接続用
-(def postgresql-db {:subprotocol "postgresql"
-                    :subname "//ec2-174-129-1-179.compute-1.amazonaws.com:5432/d76k2v0lvos1l3?ssl=true&sslfactory=org.postgresql.ssl.NonValidatingFactory"
-                    :user "ollzkkdgygzkti"
-                    :password "3fdgK_t5FBW2n4-yGs5_D6Xh8f"})
+; 状態管理atom
+(def games (atom []))
 
-;;;;;;;;;; ゲームの状態を管理するatom
-(def is-started (atom false))
-(def counter (atom 0))
+; db関連
+(load "db")
 
-;;;;;;;;;; 汎用
-; jsonレスポンスを返す
-(defn res-json [body]
-  {:status 200 :headers {"Content-Type" "application/json; charset=UTF-8"} :body body})
-; httpレスポンスを返す
-(defn res-http [body]
-  {:status 200 :headers {"Content-Type" "text/html; charset=UTF-8"} :body body})
+; http関連
+(load "http")
 
-;;;;;;;;;; テスト用
-; チャットシステムエミュレート（常に応答はresmsg）
-(defn make-chat-res [req]
-  (str "{\"req\": \"" req "\", \"res\": \"resmsg\"}"))
+; game関連
+(load "game")
 
-;;;;;;;;;; 対話機能API
-; チャット用rest-api呼び出し用（本文のJSON文字列を返す）
-(defn rest-chat [url req]
-  (:body
-   @(http/get
-    (str url "?req=" (java.net.URLEncoder/encode req "UTF-8")))))
+; 対話機能関連
+(load "chat")
 
-;;;;;;;;;; ゲーム実行
-; 会話ログをDBへ挿入
-(defn regist-chat [val]
-  (j/insert!
-    postgresql-db
-    :hoge
-    {:col1 val}))
-(defn start[]
-  (if (true? @is-started) "game is started !!"
-    (do
-      (reset! is-started true)
-      (while @is-started
-        (do
-          (swap! counter inc)
-          (regist-chat (str "game running :" @counter))
-          (Thread/sleep 10000)))
-      (regist-chat "game is end")
-      (reset! counter 0)
-      "game is end")))
+; チャットシステムエミュレート
+(defn make-chat-res [bot_id keyword]
+  (str "{\"bot_id\": \"" bot_id "\", \"bot_name\": \"mybot\"" ", \"answer\" : \"hahaha\", \"picture_url\" : \"http://xxx.png\"}"))
 
-;;;;;;;;;; ルーティング設定
+;ルーティング設定
 (defroutes app-routes
   (GET "/" [] "Hello World")
-  (GET "/chat" {params :params}
+  (GET "/bot/reaction" {params :params}
        (res-json
-        (make-chat-res (params :req))))
-  (GET "/is-started" []
-       (res-http
-        (if (true? @is-started) "true" "false")))
-  (GET "/stop" []
-       (do
-         (reset! is-started false)
-         (res-http
-          (if (true? @is-started) "true" "false"))))
-  (GET "/start" []
-       (res-http (start)))
-  (GET "/counter" []
-       (res-http (str @counter)))
-  (GET "/inc-counter" []
-       (do
-         (swap! counter inc)
-         (res-http (str @counter))))
+        (make-chat-res (params :bot_id) (params :keyword))))
+  (GET "/start" {params :params}
+         (start (params :id)))
+  (GET "/stop" {params :params} (stop (params :id)))
   (route/not-found "Not Found"))
 
 (def app
