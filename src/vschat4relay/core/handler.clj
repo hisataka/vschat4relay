@@ -3,7 +3,8 @@
             [compojure.route :as route]
             [ring.middleware.defaults :refer [wrap-defaults site-defaults]])
   (:require [org.httpkit.client :as http])
-  (:require [clojure.java.jdbc :as j]))
+  (:require [clojure.java.jdbc :as j])
+  (:use [cheshire.core]))
 
 ; 状態管理atom
 (def games (atom []))
@@ -17,22 +18,22 @@
 ; game関連
 (load "game")
 
-; 対話機能関連
-(load "chat")
-
-; チャットシステムエミュレート
-(defn make-chat-res [bot_id keyword]
-  (str "{\"bot_id\": \"" bot_id "\", \"bot_name\": \"mybot\"" ", \"answer\" : \"hahaha\", \"picture_url\" : \"http://xxx.png\"}"))
+; ランダム文字列生成
+(load "rnd")
 
 ;ルーティング設定
 (defroutes app-routes
   (GET "/" [] "Hello World")
-  (GET "/bot/reaction" {params :params}
-       (res-json
-        (make-chat-res (params :bot_id) (params :keyword))))
   (GET "/start" {params :params}
-         (start (params :id)))
-  (GET "/stop" {params :params} (stop (params :id)))
+         (start (params :bot_id1) (params :bot_id2) (params :start) (params :goal) (rand-str 30)))
+  (GET "/stop" {params :params}
+       (stop (params :game_id)))
+  (GET "/botlist" []
+       (bot-list))
+  (GET "/gamelist" []
+       (game-list))
+  (GET "/chat" {params :params}
+       (chat (params :game_id) (params :word)))
   (route/not-found "Not Found"))
 
 (def app

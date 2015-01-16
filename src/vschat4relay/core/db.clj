@@ -7,13 +7,17 @@
                     :password "3fdgK_t5FBW2n4-yGs5_D6Xh8f"})
 
 ; 会話ログをDBへ挿入
-(defn regist-chat [val]
-  (j/insert!
-    postgresql-db
-    :hoge
-    {:col1 val}))
+; create table chat_log (
+; id serial primary key
+; , game_id varchar(128)
+; , bot_id varchar(128)
+; , word varchar(512)
+; , ins_time timestamp default CURRENT_TIMESTAMP
+; )
 
-; 次のゲームID
-;(defn get-next-id []
-;  (apply :nextval (j/query postgresql-db
-;           ["select nextval('get_game_id');"])))
+
+(defn regist-chat [id turn word]
+  (j/insert!
+   postgresql-db
+   :chat_log
+    {:game_id id :bot_id turn :word word}))

@@ -7,7 +7,8 @@
                  [ring/ring-defaults "0.1.2"]
                  [http-kit "2.1.16"]
                  [org.clojure/java.jdbc "0.3.6"]
-                 [postgresql/postgresql "9.3-1102.jdbc4"]]
+                 [postgresql/postgresql "9.3-1102.jdbc4"]
+                 [cheshire "4.0.2"]]
   :plugins [[lein-ring "0.8.13"]]
   :ring {:handler vschat4relay.core.handler/app}
   :profiles
