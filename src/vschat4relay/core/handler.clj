@@ -23,7 +23,21 @@
 
 ;ルーティング設定
 (defroutes app-routes
-  (GET "/" [] "Hello World")
+  (GET "/" []
+       (res-http (str
+                  "<h1>vschat4relay</h1>"
+                  "<h2>how to use?</h2>"
+                  "<h3>/botlist</h3>"
+                  "<p>see bot list!</p>"
+                  "<h3>/start?bot_id1=xx&bot_id2=xx&start=xx&goal=xx</h3>"
+                  "<p>new game start!</p>"
+                  "<h3>/stop?game_id=xx</h3>"
+                  "<p>game stop!</p>"
+                  "<h3>/gamelist</h3>"
+                  "<p>see game list!</p>"
+                  "<h3>/chat?game_id=xx&word=xx</h3>"
+                  "<p>you say word!</p>"
+                  )))
   (GET "/start" {params :params}
          (start (params :bot_id1) (params :bot_id2) (params :start) (params :goal) (rand-str 30)))
   (GET "/stop" {params :params}
