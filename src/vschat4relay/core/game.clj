@@ -59,11 +59,12 @@
   (do
     (swap! games conj {:id id :run? true :turn bot-1 :bot-1 bot-1 :bot-2 bot-2 :curr-word curr-word :goal-word goal-word})
     (future (while (get-run? id) (do
-                                   (regist-chat id (get-turn id) (get-curr-word))
+                                   (Thread/sleep 5000)
+                                   (regist-chat id (get-turn id) (get-curr-word id))
                                    (let [new-word (get-answer (get-turn id) (get-curr-word id))]
-                                       (upd-curr-word id new-word))
+                                         (upd-curr-word id new-word)
+                                         )
                                    (if (= nil (re-seq (re-pattern (str ".*" (get-goal-word id) ".*")) (get-curr-word id))) (change-turn id) (stop id))
-                                   (Thread/sleep 1000)
                                    )))
     (res-json (str "{\"game_id\": \"" id "\", \"run?\": true}"))
     ))
