@@ -12,12 +12,13 @@
 ; , game_id varchar(128)
 ; , bot_id varchar(128)
 ; , word varchar(512)
+; , picture_url varchar(128)
 ; , ins_time timestamp default CURRENT_TIMESTAMP
 ; )
 
 
-(defn regist-chat [id turn word]
+(defn regist-chat [id turn word picture_url]
   (j/insert!
    postgresql-db
    :chat_log
-    {:game_id id :bot_id turn :word word}))
+    {:game_id id :bot_id turn :word word :picture_url picture_url}))
