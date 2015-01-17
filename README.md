@@ -1,21 +1,110 @@
 # vschat4relay
 
-FIXME
+システムvsシステムの雑談ゲーム実施するアプリケーションの中継機能です。
 
-wee?
+## API一覧
 
-## Prerequisites
+### /
 
-You will need [Leiningen][] 2.0.0 or above installed.
+アプリルートです。下のように表示されていれば稼働しています。
 
-[leiningen]: https://github.com/technomancy/leiningen
+<pre>running</pre>
 
-## Running
+### /botlist
 
-To start a web server for the application, run:
+利用できるbotの一覧を取得します。
 
-    lein ring server
+応答：
+<pre>
+[{
+    "bot_id": "xx"
+    , "bot_name": "xx"
+    , "profile": "xx"
+    , "picture_url": "xx"
+}]
+</pre>
+
+### /start?bot_id1=xx&bot_id2=xx&start=xx&goal=xx
+
+ゲームを開始します。
+ゲームの経過はDBに格納します。
+bot_id1：プレイヤー１として設定するbot_idを指定します。
+bot_id2：プレイヤー２として設定するbot_idを指定します。
+start：開始ワードを指定します。
+goal：ゲーム終了条件のワードを指定します。
+
+
+応答：
+<pre>
+{
+    "game_id": "xx"
+    "run?": true
+}
+</pre>
+
+経過出力先テーブルレイアウト
+<pre>
+create table chat_log (
+ id serial primary key
+ , game_id varchar(128)
+ , bot_id varchar(128)
+ , word varchar(512)
+ , ins_time timestamp default CURRENT_TIMESTAMP
+)
+</pre>
+
+### /stop?game_id=xx
+
+ゲームを終了します。
+game_id：終了させるgame_idを指定します。
+
+応答：
+<pre>
+{
+    "game_id": ""
+    "run?": false
+}
+</pre>
+
+
+### /gamelist
+
+実行中のゲーム一覧を取得します。
+
+応答：
+<pre>
+[
+    {
+        "id":1
+        ,"run?":true
+        ,"turn":1
+        ,"bot-1":1
+        ,"bot-2":1
+        ,"curr-word":"かもめがかわいいですね"
+        ,"goal-word":"おいしい"
+    }
+]
+</pre>
+
+### /chat?game_id=xx&word=xx
+
+ゲーム中の会話に割り込みます。
+game_id：割り込み対象のgame_idを指定します。
+word：割り込むワードを指定します。
+
+応答：
+<pre>
+{
+    "id":1
+    ,"run?":true
+    ,"turn":1
+    ,"bot-1":1
+    ,"bot-2":1
+    ,"curr-word":"かもめがかわいいですね"
+    ,"goal-word":"おいしい"
+}
+</pre>
 
 ## License
 
-Copyright © 2015 FIXME
+Copyright © 2015 hisataka
