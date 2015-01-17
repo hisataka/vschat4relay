@@ -22,3 +22,16 @@
    postgresql-db
    :chat_log
     {:game_id id :bot_id turn :word word :picture_url picture_url}))
+
+(defn get-log [id]
+  (res-json (generate-string (j/query postgresql-db
+           ["select * from chat_log where game_id = ?" id]))))
+
+(defn delete-log [id]
+  (do
+    (j/delete!
+     postgresql-db
+     :chat_log
+     ["game_id = ?" id])
+    (res-http (str "game_id=" id "のログをテーブルから削除しました"))
+    ))

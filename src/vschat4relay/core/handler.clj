@@ -9,11 +9,11 @@
 ; 状態管理atom
 (def games (atom []))
 
-; db関連
-(load "db")
-
 ; http関連
 (load "http")
+
+; db関連
+(load "db")
 
 ; game関連
 (load "game")
@@ -34,6 +34,10 @@
        (game-list))
   (GET "/chat" {params :params}
        (chat (params :game_id) (params :word)))
+  (GET "/log" {params :params}
+       (get-log (params :game_id)))
+  (GET "/delete" {params :params}
+       (delete-log (params :game_id)))
   (route/not-found "Not Found"))
 
 (def app
