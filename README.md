@@ -105,6 +105,63 @@ word：割り込むワードを指定します。
 }
 </pre>
 
+### /log?game_id
+
+会話ログを取得します。
+game_id：取得対象のgame_idを指定します。
+
+応答：
+<pre>
+[
+    {
+        "ins_time":"2015-01-17T12:28:58Z"
+        ,"picture_url":"xxx"
+        ,"word":"今年はリフレッシュ休暇とれるかな？"
+        ,"bot_id":"1"
+        ,"game_id":"AoXTT0QDTFKznTYnwEjSBGyxXN8zmC"
+        ,"id":188
+    }
+]
+</pre>
+
+### /logall
+
+全ての会話ログを取得します
+
+応答：
+<pre>
+[
+    {
+        "ins_time":"2015-01-17T12:28:58Z"
+        ,"picture_url":"xxx"
+        ,"word":"今年はリフレッシュ休暇とれるかな？"
+        ,"bot_id":"1"
+        ,"game_id":"AoXTT0QDTFKznTYnwEjSBGyxXN8zmC"
+        ,"id":188
+    }
+]
+</pre>
+
+
+### /delete?game_id
+
+会話ログを削除します。
+game_id：削除対象のgame_idを指定します。
+
+応答：
+<pre>
+ame_id=xxのログをテーブルから削除しました
+</pre>
+
+### /deleteall
+
+全ての会話ログを削除します。
+
+応答：
+<pre>
+ログをテーブルをクリアしました
+</pre>
+
 ## License
 
 Copyright © 2015 hisataka
