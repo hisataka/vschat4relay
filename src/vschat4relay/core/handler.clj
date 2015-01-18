@@ -36,8 +36,12 @@
        (chat (params :game_id) (params :word)))
   (GET "/log" {params :params}
        (get-log (params :game_id)))
+  (GET "/logall" []
+       (get-log))
   (GET "/delete" {params :params}
        (delete-log (params :game_id)))
+  (GET "/deleteall" []
+       (delete-log))
   (route/not-found "Not Found"))
 
 (def app
