@@ -1,11 +1,19 @@
 $(document).ready(function(){
   makeGameList();
 
-  // 行クリック
   $(document).on('click', '.gamelist', function() {
     var row = $(this).closest('tr').index();
     var game_id = $('#oldgametable')[0].rows[row + 1].cells[1].innerHTML;
     updateLog(game_id);
+  });
+
+  $(document).on('click', '.delete', function() {
+    var row = $(this).closest('tr').index();
+    var game_id = $('#oldgametable')[0].rows[row + 1].cells[1].innerHTML;
+
+    $('#oldgametable')[0].deleteRow(row + 1);
+    $('#logElem').empty();
+    deleteLog(game_id);
   });
 });
 
@@ -19,14 +27,23 @@ function makeGameList() {
       var len = json.length;
       var list = "";
       for (var i = 0; i < len; i ++) {
-        list += "<tr class='gamelist' style='cursor:pointer'><td>" + i + "</td><td>" + json[i].game_id + "</td><td>" + json[i].count + "</td><td>" + json[i].ins_time + "</td></tr>";
+        list += "<tr style='cursor:pointer'><td class='gamelist'>" + i + "</td><td class='gamelist'>" + json[i].game_id + "</td><td class='gamelist'>" + json[i].count + "</td><td class='gamelist'>" + json[i].ins_time + "</td>";
+        list += "<td class='delete'><button type='button' class='btn btn-default'>delete</button></td></tr>";
       }
       $('#appendElem').append(list);
     }
   });
 }
 
-// ログエリア
+function deleteLog(gameId) {
+  var url = "/delete?game_id=" + gameId;
+  $.ajax({
+    type: 'GET',
+    url: url
+  });
+}
+
+// ログエリア更新
 function updateLog(gameId) {
   var url = "/log?game_id=" + gameId;
   $.ajax({
