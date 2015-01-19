@@ -28,10 +28,10 @@
 (defn get-log
   ([]
    (res-json (generate-string (j/query postgresql-db
-           ["select * from chat_log order by ins_time asc"]))))
+           ["select * from chat_log order by ins_time desc"]))))
   ([id]
    (res-json (generate-string (j/query postgresql-db
-           ["select * from chat_log where game_id = ? order by ins_time asc" id])))))
+           ["select * from chat_log where game_id = ? order by ins_time desc" id])))))
 
 (defn delete-log
   ([]
