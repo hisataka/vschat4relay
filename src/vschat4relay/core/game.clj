@@ -67,7 +67,7 @@
 (defn get-bot [id]
   (loop [bots (parse-string (let [res (http/get "https://fummy-jokebot-service.herokuapp.com/bot/list")](:body @res)) true)]
     (let [curr-bot (first bots)]
-      (if (or (= id (:bot_id curr-bot)) (= nil curr-bot)) curr-bot (recur (rest bots))))))
+      (if (or (= id (str (:bot_id curr-bot))) (= nil curr-bot)) curr-bot (recur (rest bots))))))
 
 (defn chat [id word]
   (do
@@ -78,15 +78,15 @@
 (defn start [bot-1 bot-2 curr-word goal-word id]
   (do
     (swap! games conj {:id id :run? true :turn bot-1 :bot-1 bot-1 :bot-2 bot-2 :curr-word curr-word :goal-word goal-word :curr-picture (:picture_url (get-bot (str bot-1)))})
+    (regist-chat id (get-turn id) (get-curr-word id) (get-curr-picture id))
+    (change-turn id)
     (future (while (get-run? id) (do
                                    (Thread/sleep 5000)
-                                   (regist-chat id (get-turn id) (get-curr-word id) (get-curr-picture id))
                                    (let [res (get-answer (get-turn id) (get-curr-word id))]
                                          (upd-curr id (:answer res) (:picture_url res))
                                          )
+                                   (regist-chat id (get-turn id) (get-curr-word id) (get-curr-picture id))
                                    (if (= nil (re-seq (re-pattern (str ".*" (get-goal-word id) ".*")) (get-curr-word id))) (change-turn id) (stop id))
                                    )))
     (res-json (str "{\"game_id\": \"" id "\", \"run?\": true}"))
     ))
-
-
