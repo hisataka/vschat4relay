@@ -42,6 +42,8 @@
        (delete-log (params :game_id)))
   (GET "/deleteall" []
        (delete-log))
+  (GET "/oldgamelist" []
+       (get-old-games))
   (route/files "/")
   (route/resources "/")
   (route/not-found "Not Found"))

@@ -4,18 +4,18 @@
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>Bootstrap sample</title>
+        <title>New Game</title>
 
         <!-- Bootstrap -->
         <link href="css/bootstrap.min.css" rel="stylesheet">
 
-        <link href="css/newgame.css" rel="stylesheet">
+        <link href="css/common.css" rel="stylesheet">
     </head>
     <body>
-        <h1>vsChat!</h1>
+        <h1 style="margin-left:1em">vsChat!</h1>
         <ul class="nav nav-tabs nav-justified">
             <li class="active"><a href="#">New Game</a></li>
-            <li><a href="#">Old Game</a></li>
+            <li><a href="oldgames.html">Old Games</a></li>
         </ul>
 
         <!-- ゲーム開始画面 -->
@@ -25,7 +25,10 @@
         <!-- ゲーム実行中画面 -->
 
         <section id="gameElem" class="container">
-            <img id='pauseButton' src="img/pause.png" width="50px" height="50px"/>
+            <div id="running">
+                <img id='pauseButton' src="img/pause.png" width="50px" height="50px"/>
+                <input type='text' id='chat' />　<button id="chatButton" type="button" class="btn btn-primary">乱入</button>
+            </div>
             <img id='backButton' src="img/back.jpg" width="50px" height="50px"/>
             <div id="logElem" class="row"></div>
         </section>

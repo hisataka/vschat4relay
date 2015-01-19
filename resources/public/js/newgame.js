@@ -25,8 +25,22 @@ $(document).ready(function(){
   // ゲーム停止処理
   $(document).on('click', '#pauseButton', stopGame);
 
+  $(document).on('click', '#chatButton', chat);
+
 });
 
+// chat乱入
+function chat() {
+  var url = "/chat?game_id=" + gameId + "&word=" + $('#chat').val();
+  $.ajax({
+    type: 'GET',
+    url: url,
+    dataType: 'json',
+    success: function(json){
+      $('#chat').val("");
+    }
+  });
+}
 
 // ゲーム終了
 function stopGame() {
@@ -40,7 +54,7 @@ function stopGame() {
       clearInterval(timer);
 
       // ボタンの表示/非表示
-      $('#pauseButton').hide();
+      $('#running').hide();
       $('#backButton').show();
     }
   });

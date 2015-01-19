@@ -49,3 +49,6 @@
       ["game_id = ?" id])
      (res-http (str "game_id=" id "のログをテーブルから削除しました"))
     )))
+
+(defn get-old-games []
+  (res-json (generate-string (j/query postgresql-db ["select game_id, count(game_id) as count, max(ins_time) as ins_time from chat_log group by game_id order by max(ins_time) desc"]))))
