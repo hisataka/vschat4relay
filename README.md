@@ -8,6 +8,10 @@
 
 /newgame.html
 
+### 現在実行中ゲーム一覧画面
+
+/runninggame.html
+
 ### 過去ゲーム一覧画面
 
 /oldgames.html
