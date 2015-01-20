@@ -107,9 +107,18 @@ function startGame() {
   var goal = $(':text[name="goal"]').val();
 
   // 入力チェック
-  if (!(bot1 && bot2 && start && goal)) {
-    $('.errmsg').text('ゲーム設定をしてください').show();
+  if (!(start && goal)) {
+    $('.errmsg').text('開始・終了ワードを設定してください').show();
     return ;
+  }
+
+  var url;
+  if (bot1 && bot2) {
+    // 1 vs 1
+    url = "/start?bot_id1=" + bot1 + "&bot_id2=" + bot2 + "&start=" + start + "&goal=" + goal;
+  } else {
+    // マルチbotゲーム
+    url = "/multi?start=" + start + "&goal=" + goal;
   }
 
   // 要素表示/非表示
@@ -118,7 +127,6 @@ function startGame() {
   $('#gameElem').show();
 
   // 実行
-  var url = "/start?bot_id1=" + bot1 + "&bot_id2=" + bot2 + "&start=" + start + "&goal=" + goal;
   $.ajax({
     type: 'GET',
     url: url,

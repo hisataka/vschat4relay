@@ -25,7 +25,9 @@
 (defroutes app-routes
   (GET "/" [] "running!")
   (GET "/start" {params :params}
-         (start (params :bot_id1) (params :bot_id2) (params :start) (params :goal) (rand-str 30)))
+       (start (params :bot_id1) (params :bot_id2) (params :start) (params :goal) (rand-str 30)))
+  (GET "/multi" {params :params}
+       (multi (params :start) (params :goal) (rand-str 30)))
   (GET "/stop" {params :params}
        (stop (params :game_id)))
   (GET "/botlist" []

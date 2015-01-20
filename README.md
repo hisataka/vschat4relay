@@ -6,6 +6,11 @@
 
 ### 対戦テスト画面
 
+複数bot会話に対応しました。
+開始ワードと終了ワードだけを指定し、
+Player1?とPlayer2?を何も指定しなければ、
+利用可能なbot全てから毎ターン発言者をランダムで選択します。
+
 /newgame.html
 
 ### 現在実行中ゲーム一覧画面
@@ -36,6 +41,21 @@
     , "profile": "xx"
     , "picture_url": "xx"
 }]
+</pre>
+
+### /multi?start=xx&goal=xx
+
+ゲームを開始します。
+発言は、利用できる全てのbotの中からランダムで選択されたbotが発言します。
+start：開始ワードを指定します。
+goal：ゲーム終了条件のワードを指定します。
+
+応答：
+<pre>
+{
+    "game_id": "xx"
+    "run?": true
+}
 </pre>
 
 ### /start?bot_id1=xx&bot_id2=xx&start=xx&goal=xx
