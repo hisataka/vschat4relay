@@ -4,20 +4,15 @@ var gameId = "";
 var timer;
 
 $(document).ready(function(){
-  // 初期表示用要素の非表示など
   $('#pauseButton').css("cursor","pointer");
   $('#backButton').css("cursor","pointer");
-  $('#gameElem').hide();
   $('.errmsg').hide();
-  $('#backButton').hide();
-
-  // 戻るボタン
   $(document).on('click', '#backButton', function() {
     window.location.href = "newgame.html";
   });
-
   // 開始画面要素生成
   makeStartElem($('#appendStartElem'));
+  $('#backButton').hide();
 
   // ゲーム開始処理
   $(document).on('click', '#startButton', startGame);
@@ -27,7 +22,30 @@ $(document).ready(function(){
 
   $(document).on('click', '#chatButton', chat);
 
+  // パラメータ
+  var params = getUrlVars();
+  if (params['game_id']) {
+    // 継続ゲーム
+    $('#startElem').hide();
+    gameId = params['game_id'];
+    timer = setInterval(reload,2000);
+  } else {
+    // 新しいゲーム
+    $('#gameElem').hide();
+  }
 });
+
+function getUrlVars()
+{
+  var vars = [], hash;
+  var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
+  for(var i = 0; i < hashes.length; i++) {
+    hash = hashes[i].split('=');
+    vars.push(hash[0]);
+    vars[hash[0]] = hash[1];
+  }
+  return vars;
+}
 
 // chat乱入
 function chat() {
