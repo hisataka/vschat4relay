@@ -29,32 +29,3 @@ function makeGameList() {
     }
   });
 }
-
-function deleteLog(gameId) {
-  var url = "/delete?game_id=" + gameId;
-  $.ajax({
-    type: 'GET',
-    url: url
-  });
-}
-
-// ログエリア更新
-function updateLog(gameId) {
-  var url = "/log?game_id=" + gameId;
-  $.ajax({
-    type: 'GET',
-    url: url,
-    dataType: 'json',
-    success: function(json){
-      var len = json.length;
-      var log = "<p>";
-      for (var i = 0; i < len; i ++) {
-          log += "<div class='col-sm-1'>";
-          log += "<img src='" + json[i].picture_url + "' width='100px' height='100px' />";
-          log += "</div><div class='col-sm-11'><div class='comment balloon-left'><p>" + json[i].word + "</p></div></div>";
-      }
-      $('#logElem').empty();
-      $('#logElem').append(log);
-    }
-  });
-}
